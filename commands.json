@@ -10,13 +10,18 @@
         "deps": ["clean"],
         "cmd": ["tsc"]
       },
+      "check-key": {
+        "cmd": ["node", "query-gateway/scripts/checkKey.js", "query-gateway/keys/singleProc.key"],
+        "hidden": true
+      },
       "up": {
+        "deps": ["check-key"],
         "description": "Start a PG database",
-        "cmd": ["docker-compose", "up", "-d"]
+        "cmd": ["docker", "compose", "up", "-d"]
       },
       "down": {
         "description": "Drop a PG database",
-        "cmd": ["docker-compose", "down"]
+        "cmd": ["docker", "compose", "down"]
       },
       "migration:apply": {
         "description": "Apply the DB migrations",
