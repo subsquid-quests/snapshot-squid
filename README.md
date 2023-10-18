@@ -140,15 +140,15 @@ A healthy response should look similar to
    ```
    The command should output lines like these:
    ```
-   [api] 09:56:02 WARN  sqd:graphql-server enabling dumb in-memory cache (size: 100mb, ttl: 1000ms, max-age: 1000ms)
-   [api] 09:56:02 INFO  sqd:graphql-server listening on port 4350
-   [processor] 09:56:04 INFO  sqd:processor processing blocks from 6000000
-   [processor] 09:56:05 INFO  sqd:processor using archive data source
-   [processor] 09:56:05 INFO  sqd:processor prometheus metrics are served at port 33097
-   [processor] 09:56:08 INFO  sqd:processor:mapping Burned 59865654 Gwei from 6000000 to 6016939
-   [processor] 09:56:08 INFO  sqd:processor 6016939 / 17743832, rate: 5506 blocks/sec, mapping: 304 blocks/sec, 182 items/sec, eta: 36m
+   [api] 23:33:48 WARN  sqd:graphql-server enabling dumb in-memory cache (size: 100mb, ttl: 1000ms, max-age: 1000ms)
+   [api] 23:33:48 INFO  sqd:graphql-server listening on port 4350
+   [processor] 23:33:49 INFO  sqd:processor processing blocks from 11000000
+   [processor] 23:33:49 INFO  sqd:processor using archive data source
+   [processor] 23:33:49 INFO  sqd:processor prometheus metrics are served at port 36935
+   [processor] 23:33:52 INFO  sqd:processor 11005159 / 18377705, rate: 1756 blocks/sec, mapping: 352 blocks/sec, 311 items/sec, eta: 1h 10m
+   [processor] 23:33:57 INFO  sqd:processor 11010199 / 18377705, rate: 1735 blocks/sec, mapping: 488 blocks/sec, 428 items/sec, eta: 1h 11m
    ```
-   The squid should sync in 10-15 minutes. When it's done, stop it with Ctrl-C, then stop and remove the auxiliary containers with
+   The squid should sync in about 1.5 hours. When it's done, stop it with Ctrl-C, then stop and remove the auxiliary containers with
    ```bash
    sqd down
    ```
@@ -157,7 +157,7 @@ A healthy response should look similar to
 
 | Category         | Skill Level                          | Time required (minutes) | Max Participants | Reward                              | Status |
 | ---------------- | ------------------------------------ | ----------------------- | ---------------- | ----------------------------------- | ------ |
-| Squid Deployment | $\textcolor{green}{\textsf{Simple}}$ | ~40                     | -                | $\textcolor{red}{\textsf{750tSQD}}$ | open   |
+| Squid Deployment | $\textcolor{green}{\textsf{Simple}}$ | ~100                    | -                | $\textcolor{red}{\textsf{750tSQD}}$ | open   |
 
 # Acceptance critera
 
