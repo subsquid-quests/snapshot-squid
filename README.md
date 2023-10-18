@@ -98,7 +98,7 @@ A healthy response should look similar to
 
 1. Open a terminal and run the following commands to create the squid and enter its folder:
    ```bash
-   sqd init my-snapshot-squid -t https://github.com/subsquid-quests/single-chain-squid
+   sqd init my-snapshot-squid -t https://github.com/subsquid-quests/snapshot-squid
    ```
    ```bash
    cd my-snapshot-squid
