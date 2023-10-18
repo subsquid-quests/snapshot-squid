@@ -14,7 +14,7 @@
 
 # Deploy a Snapshot squid
 
-This is a quest to run a squid migrated from the [Snapshot subgraph](https://thegraph.com/hosted-service/subgraph/snapshot-labs/snapshot) by [@0xNomind](https://thegraph.com/hosted-service/subgraph/snapshot-labs/snapshot), one of the winners of the [migration quest](https://github.com/subsquid-quests/snapshot-subgraph-migration). You can find the original repository [here](https://github.com/0xNomind/snapshot-squid).
+This is a quest to run a squid migrated from the [Snapshot subgraph](https://thegraph.com/hosted-service/subgraph/snapshot-labs/snapshot) by [@0xNomind](https://github.com/0xNomind/snapshot-squid), one of the winners of the [migration quest](https://github.com/subsquid-quests/snapshot-subgraph-migration). You can find the original repository [here](https://github.com/0xNomind/snapshot-squid).
 
 Here is how to run the squid:
 
