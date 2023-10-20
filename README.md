@@ -105,7 +105,7 @@ A healthy response should look similar to
    ```
    You can replace `my-snapshot-squid` with any name you choose for your squid. If a squid with that name already exists in [Aquarium](https://docs.subsquid.io/deploy-squid/), the first command will throw an error; if that happens simply think of another name and repeat the commands.
 
-2. Press "Get Key" button in the quest card to obtain the `SnapshotSquid.key` key file. Save it to the `./query-gateway/keys` subfolder of the squid folder. The file will be used by the query gateway container.
+2. Press "Get Key" button in the quest card to obtain the `snapshot.key` key file. Save it to the `./query-gateway/keys` subfolder of the squid folder. The file will be used by the query gateway container.
 
 3. The template squid uses a PostgreSQL database and a query gateway. Start Docker containers that run these with
    ```bash
