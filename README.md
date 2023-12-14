@@ -157,7 +157,7 @@ A healthy response should look similar to
 
 | Category         | Skill Level                          | Time required (minutes) | Max Participants | Reward                              | Status |
 | ---------------- | ------------------------------------ | ----------------------- | ---------------- | ----------------------------------- | ------ |
-| Squid Deployment | $\textcolor{green}{\textsf{Simple}}$ | ~100                    | -                | $\textcolor{red}{\textsf{500tSQD}}$ | open   |
+| Squid Deployment | $\textcolor{green}{\textsf{Simple}}$ | ~100                    | -                | $\textcolor{red}{\textsf{250tSQD}}$ | open   |
 
 # Acceptance critera
 
