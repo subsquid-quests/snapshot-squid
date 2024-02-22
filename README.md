@@ -1,4 +1,4 @@
-<p align="center">
+w<p align="center">
 <picture>
     <source srcset="https://uploads-ssl.webflow.com/63b5a9958fccedcf67d716ac/64662df3a5a568fd99e3600c_Squid_Pose_1_White-transparent-slim%201.png" media="(prefers-color-scheme: dark)">
     <img src="https://uploads-ssl.webflow.com/63b5a9958fccedcf67d716ac/64662df3a5a568fd99e3600c_Squid_Pose_1_White-transparent-slim%201.png" alt="Subsquid Logo">
@@ -10,13 +10,13 @@
 
 [Website](https://subsquid.io) | [Docs](https://docs.subsquid.io/) | [Discord](https://discord.gg/subsquid)
 
-[Subsquid Network FAQ](https://docs.subsquid.io/subsquid-network/)
+[Subsquid Network Docs](https://docs.subsquid.io/subsquid-network/)
 
-# Deploy a Snapshot squid
+# Run a Snapshot squid
 
 This is a quest to run a squid migrated from the [Snapshot subgraph](https://thegraph.com/hosted-service/subgraph/snapshot-labs/snapshot) by [@0xNomind](https://github.com/0xNomind/snapshot-squid), one of the winners of the [migration quest](https://github.com/subsquid-quests/snapshot-subgraph-migration). You can find the original repository [here](https://github.com/0xNomind/snapshot-squid).
 
-Here is how to run the squid:
+Note: you'll need to have at least 10 tSQD to complete this quest. Obtain them by doing other quests first.
 
 ### I. Install dependencies: Node.js, Docker, Git.
 
@@ -85,56 +85,90 @@ Open a terminal and run
 ```bash
 npm install --global @subsquid/cli@latest
 ```
-This adds the [`sqd` command](/squid-cli). Verify that the installation was successful by running
+This adds the [`sqd` command](https://docs.subsquid.io/squid-cli/). Verify that the installation was successful by running
 ```bash
 sqd --version
 ```
 A healthy response should look similar to
 ```
-@subsquid/cli/2.5.0 linux-x64 node-v20.5.1
+@subsquid/cli/2.8.0 linux-x64 node-v20.5.1
 ```
 
 ### III. Run the squid
 
-1. Open a terminal and run the following commands to create the squid and enter its folder:
+1. Open a terminal, navigate to any folder for which you have write permissions and run the following commands to retrieve the squid, enter its folder and install dependencies:
    ```bash
    sqd init my-snapshot-squid -t https://github.com/subsquid-quests/snapshot-squid
    ```
    ```bash
    cd my-snapshot-squid
    ```
-   You can replace `my-snapshot-squid` with any name you choose for your squid. If a squid with that name already exists in [Aquarium](https://docs.subsquid.io/deploy-squid/), the first command will throw an error; if that happens simply think of another name and repeat the commands.
+   ```bash
+   npm ci
+   ```
 
-2. Press "Get Key" button in the quest card to obtain the `snapshot.key` key file. Save it to the `./query-gateway/keys` subfolder of the squid folder. The file will be used by the query gateway container.
+> [!IMPORTANT]
+> If you're on Windows, the terminal opens in `C:\Windows\system32` by default. Do not download your squid there, navigate someplace else.
 
-3. The template squid uses a PostgreSQL database and a query gateway. Start Docker containers that run these with
+2. Press "Get Key" button in the quest card to obtain the `snapshotPhaseTwo.key` key file. Save it to the `./query-gateway/keys` subfolder of the squid folder. The file will be used to identify your local query gateway when locking tSQD to allocate bandwidth and as it operates.
+
+3. Get the peer ID of your future gateway by running:
+   ```bash
+   sqd get-peer-id
+   ```
+
+4. Register your future gateway using [this page](https://app.subsquid.io/profile/gateways/add?testnet).
+   - Use the peer ID you obtained in the previous step.
+   - Leave the "Publicly available" switch disabled.
+
+5. Lock 10 tSQD by selecting your gateway on [this page](https://app.subsquid.io/profile/gateways?testnet), clicking "Get CU" and submitting the form. Once done, you will begin getting computation units (*CUs*) once every epoch (~15 minutes).
+
+   The "Lock blocks duration" field lets you tune the length of time during which you'll be able to query the network, measured in blocks of Arbitrum Sepolia's L1 (that is, Ethereum Sepolia). The minumum is five hours, but you can opt to lock for longer if you intend to work on the quest over multiple days.
+
+   | Time              | Blocks |
+   |:-----------------:|:------:|
+   | 5 hours (minimum) | 1500   |
+   | 24 hours          | 7200   |
+   | 72 hours          | 21600  |
+
+   Be aware that you'll need to unlock your tokens manually after the end of this period. The tokens you get back will be used in subsequent quests.
+
+   If the locking period expires before you finish your work, simply unlock your tokens, then lock them again.
+
+6. Wait for about 15 minutes. This is the time it takes for Subsquid Network to enter a new epoch, at the beginning of which CUs will be allocated towards your gateway.
+
+7. Start the query gateway with
    ```bash
    sqd up
    ```
-   Wait for about a minute before proceeding to the next step.
 
-   If you get an error message about `unknown shorthand flag: 'd' in -d`, that means that you're using an old version of `docker` that does not support the `compose` command yet. Update Docker or edit the `commands.json` file as follows:
-   ```diff
-            "up": {
-            "deps": ["check-key"],
-            "description": "Start a PG database",
-   -        "cmd": ["docker", "compose", "up", "-d"]
-   +        "cmd": ["docker-compose", "up", "-d"]
-          },
-          "down": {
-            "description": "Drop a PG database",
-   -        "cmd": ["docker", "compose", "down"]
-   +        "cmd": ["docker-compose", "down"]
-          },
+   If you'd like to check if the locking was successful, you can inspect the logs of the query gateway container with `docker logs <query_gateway_container_name>`. After one-two minutes required for the node startup it should contain some lines like this one:
+   ```
+   [2024-01-31T14:55:06Z INFO  query_gateway::chain_updates] allocated CU: 48300 spent CU: 0
    ```
 
-4. Prepare the squid for running by installing dependencies, building the source code and creating all the necessary database tables:
+> [!TIP]
+>   If you get an error message about `unknown shorthand flag: 'd' in -d`, that means that you're using an old version of `docker` that does not support the `compose` command yet. Update Docker or edit the `commands.json` file as follows:
+>   ```diff
+>            "up": {
+>            "deps": ["check-key"],
+>            "description": "Start a PG database",
+>   -        "cmd": ["docker", "compose", "up", "-d"]
+>   +        "cmd": ["docker-compose", "up", "-d"]
+>          },
+>          "down": {
+>            "description": "Drop a PG database",
+>   -        "cmd": ["docker", "compose", "down"]
+>   +        "cmd": ["docker-compose", "down"]
+>          },
+>   ```
+
+8. Build the squid code
    ```bash
-   npm ci
    sqd build
-   sqd migration:apply
    ```
-5. Start your squid with
+
+9. Start your squid with
    ```bash
    sqd run .
    ```
@@ -148,23 +182,24 @@ A healthy response should look similar to
    [processor] 23:33:52 INFO  sqd:processor 11005159 / 18377705, rate: 1756 blocks/sec, mapping: 352 blocks/sec, 311 items/sec, eta: 1h 10m
    [processor] 23:33:57 INFO  sqd:processor 11010199 / 18377705, rate: 1735 blocks/sec, mapping: 488 blocks/sec, 428 items/sec, eta: 1h 11m
    ```
-   The squid should sync in about 1.5 hours. When it's done, stop it with Ctrl-C, then stop and remove the auxiliary containers with
-   ```bash
-   sqd down
-   ```
+   The squid should sync in about 1.5 hours.
+
+> [!TIP]
+> Do not worry if the squid fails: any progress it made is saved. Simply restart it if it happens.
+
+When done, stop the squid processor with Ctrl-C, then stop and remove the auxiliary containers with
+```bash
+sqd down
+```
+
+10. After the locking period ends, go to the [gateways page](https://app.subsquid.io/profile/gateways/) and unlock your tSQD - you will need them for other quests.
 
 # Quest Info
 
 | Category         | Skill Level                          | Time required (minutes) | Max Participants | Reward                              | Status |
 | ---------------- | ------------------------------------ | ----------------------- | ---------------- | ----------------------------------- | ------ |
-| Squid Deployment | $\textcolor{green}{\textsf{Simple}}$ | ~100                    | -                | $\textcolor{red}{\textsf{250tSQD}}$ | open   |
+| Squid Deployment | $\textcolor{green}{\textsf{Simple}}$ | ~100                    | -                | $\textcolor{red}{\textsf{20tSQD}}$  | open   |
 
 # Acceptance critera
 
 Sync this squid using the key from the quest card. The syncing progress is tracked by the amount of data the squid has retrieved from [Subsquid Network](https://docs.subsquid.io/subsquid-network).
-
-# About this squid
-
-The Ethereum data ingester ("processor") is located in `src/main.ts`. It can be started with `sqd process`. GraphQL server runs as a separate process started by `sqd serve`. You can also use `sqd run` to run all the services at once.
-
-The squid uses [Subsquid Network](https://docs.subsquid.io/subsquid-network) as its primary data source.
