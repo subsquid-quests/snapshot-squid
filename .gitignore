@@ -1,2 +1,4 @@
-node_modules
-lib
+/node_modules
+/lib
+/query-gateway/keys/*.key
+/query-gateway/allocations.db
